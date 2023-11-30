@@ -1,7 +1,7 @@
 package route
 
 import (
-	handler "asrChat/http/handlers"
+	handler "asrChat/transport/http/handlers"
 
 	"github.com/labstack/echo"
 )

@@ -10,6 +10,6 @@ import (
 
 func GetAllUser(c echo.Context) error {
 
-fmt.Println("get all")
-return c.String(http.StatusOK, "user ini")
+	fmt.Println("get all")
+	return c.String(http.StatusOK, "user ini")
 }

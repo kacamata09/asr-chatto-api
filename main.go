@@ -1,7 +1,7 @@
 package main
 
 import (
-	httpRoutes "asrChat/http"
+	httpRoutes "asrChat/transport/http"
 	"fmt"
 
 	"github.com/labstack/echo"
