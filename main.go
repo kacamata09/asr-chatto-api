@@ -1,9 +1,9 @@
 package main
 
 import (
-	httpRoutes "go-clean-architecture-by-ahr/transport/http"
 	"database/sql"
 	"fmt"
+	httpRoutes "go-clean-architecture-by-ahr/transport/http"
 
 	"github.com/labstack/echo"
 	_ "github.com/lib/pq"
@@ -15,7 +15,6 @@ func main() {
 	if err := viper.ReadInConfig(); err != nil {
         panic(err)
     }
-
 
 	// postgresql
 	dbHost := viper.GetString("database.host")
@@ -37,8 +36,6 @@ func main() {
 
 	defer db.Close()
 
-
-	fmt.Println("ans")
 	e := echo.New()
 	httpRoutes.StartHttp(e, db)
 

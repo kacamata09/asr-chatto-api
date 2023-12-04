@@ -1,9 +1,8 @@
 package domain
 
 import (
-	"database/sql"
+	// "database/sql"
 	"time"
-
 	// "github.com/labstack/echo"
 )
 
@@ -20,7 +19,7 @@ type ChatMember struct {
 
 type ChatMemberRepository interface {
 	// GetAll(c echo.Context, cursor string)
-	GetAll(db *sql.DB) ChatMember
+	GetAll() ([]ChatMember, error)
 	// GetByID(c echo.Context, id int64) (Article, error)
 	// GetByTitle(c echo.Context, title string) (Article, error)
 	// Update(c echo.Context, ar *Article) error
@@ -29,5 +28,5 @@ type ChatMemberRepository interface {
 }
 
 type ChatMemberUsecase interface {
-	GetAllData() ChatMember
+	GetAllData() ([]ChatMember, error)
 }

@@ -1,8 +1,10 @@
 package handler
 
 import (
+	// "fmt"
 	"go-clean-architecture-by-ahr/domain"
 	helper_http "go-clean-architecture-by-ahr/transport/http/helper"
+
 	// "go-clean-architecture-by-ahr/usecase"
 	// "database/sql"
 
@@ -10,19 +12,23 @@ import (
 )
 
 type ChatHandler struct {
-	ChatUC domain.ChatMemberUsecase
+	usecase domain.ChatMemberUsecase
 }
 
-func ChatRoute(e *echo.Echo, chucs domain.ChatMemberUsecase) {
+func ChatRoute(e *echo.Echo, uc domain.ChatMemberUsecase) {
 	handler := ChatHandler {
-		ChatUC: chucs,
+		usecase: uc,
 	}
 	e.GET("/chat", handler.GetAllChatHandler)
 }     
 
-func (ch *ChatHandler) GetAllChatHandler(c echo.Context) error {
+func (h *ChatHandler) GetAllChatHandler(c echo.Context) error {
 	// init handler
-	data := ch.ChatUC.GetAllData()
+	data, err := h.usecase.GetAllData()
+
+	if err != nil{
+		return helper_http.ErrorResponse(c, err)
+	}
 	resp := helper_http.SuccessResponse(c, data, "success get all chat")
 
 	return resp

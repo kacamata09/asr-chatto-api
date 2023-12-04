@@ -1,6 +1,7 @@
 package helper_http
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -35,20 +36,29 @@ func SuccessResponse(c echo.Context, data interface{}, message string) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-func ErrorNotFound(c echo.Context, data interface{}, err error) error {
-	var message interface{}
+func ErrorResponse(c echo.Context, err error) error {
 	
-	if viper.GetBool("developer_mode"){ 
-		message = "chat not found" 
-		} else { 
-		message = err.Error()
-	}
-
 	response := Response {
-		Status: http.StatusNotFound,
-		Message: message,
-		Data: data,
+		Status: getStatusCodeError(err),
+		Message: err.Error(),
 	}
 
 	return c.JSON(http.StatusNotFound, response)
+}
+
+func getStatusCodeError(err error) int {
+	if err == nil {
+		return http.StatusOK
+	}
+
+	switch err {
+	case errors.New("internal Server Error"):
+		return http.StatusInternalServerError
+	case errors.New("your requested Item is not found"):
+		return http.StatusNotFound
+	case errors.New("your Item already exist"):
+		return http.StatusConflict
+	default:
+		return http.StatusInternalServerError
+	}
 }
