@@ -27,7 +27,7 @@ func StartHttp(e *echo.Echo, db *sql.DB) {
 	e.GET("/", homeHandler)
 
 	// chat member route
-	chatMemberRepo := repositoryPgSQL.CreateRepoChatMembers(db)
-	chatMemberUseCase := usecase.CreateChatMemberUseCase(chatMemberRepo)
-	handler.ChatRoute(e, chatMemberUseCase)
+	rolesMemberRepo := repositoryPgSQL.CreateRepoRoles(db)
+	rolesMemberUseCase := usecase.CreateChatUseCase(rolesMemberRepo)
+	handler.RolesRoute(e, rolesMemberUseCase)
 }
