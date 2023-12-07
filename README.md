@@ -1,3 +1,4 @@
+my clean architecture using golang with echo inspired by bxcode's go clean architecture
 ## setup
 
 #### migrations
