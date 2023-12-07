@@ -37,13 +37,13 @@ func SuccessResponse(c echo.Context, data interface{}, message string) error {
 }
 
 func ErrorResponse(c echo.Context, err error) error {
-	
+	statusCode := getStatusCodeError(err)
 	response := Response {
-		Status: getStatusCodeError(err),
+		Status: statusCode,
 		Message: err.Error(),
 	}
 
-	return c.JSON(http.StatusNotFound, response)
+	return c.JSON(statusCode, response)
 }
 
 func getStatusCodeError(err error) int {

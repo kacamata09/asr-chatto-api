@@ -8,7 +8,7 @@ import (
 
 
 
-type Roles struct {
+type Role struct {
 	// ID string `json:"id"`
 	ID string `json:"id"`
 	RoleName string `json:"role_name"`
@@ -18,15 +18,16 @@ type Roles struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type RolesRepository interface {
-	GetAll() ([]Roles, error)
-	GetByID(id string) (Roles, error)
+type RoleRepository interface {
+	GetAll() ([]Role, error)
+	GetByID(id string) (Role, error)
+	Create(role *Role) error
 	// Update(ar *Article) error
-	// Create(a *Article) error
 	// Delete(id string) error
 }
 
-type RolesUsecase interface {
-	GetAllData() ([]Roles, error)
-	GetByID(id string) (Roles, error)
+type RoleUsecase interface {
+	GetAllData() ([]Role, error)
+	GetByID(id string) (Role, error)
+	Create(role *Role) error
 }

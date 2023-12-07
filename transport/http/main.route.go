@@ -23,11 +23,20 @@ func homeHandler(c echo.Context) error {
 
 func StartHttp(e *echo.Echo, db *sql.DB) {
 
-	// assign route
+	// assign home
 	e.GET("/", homeHandler)
 
-	// chat member route
-	rolesMemberRepo := repositoryPgSQL.CreateRepoRoles(db)
-	rolesMemberUseCase := usecase.CreateChatUseCase(rolesMemberRepo)
-	handler.RolesRoute(e, rolesMemberUseCase)
+	// role
+	roleRepo := repositoryPgSQL.CreateRepoRole(db)
+	roleUseCase := usecase.CreateRoleUseCase(roleRepo)
+	handler.RoleRoute(e, roleUseCase)
+
+	// user
+	userRepo := repositoryPgSQL.CreateRepoUser(db)
+	userUseCase := usecase.CreateUserUseCase(userRepo)
+	handler.UserRoute(e, userUseCase)
+	
+
+
+
 }
