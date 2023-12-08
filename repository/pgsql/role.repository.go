@@ -68,3 +68,47 @@ func (repo *repoRole) Create(role *domain.Role) error {
     fmt.Println(row)
     return err
 }
+
+func (repo *repoRole) Update(id string, role *domain.Role) (affect int64, err error) {
+    result, err := repo.DB.Exec("UPDATE roles SET role_name = $1, role_desc = $2, access_permission = $3 where id = $4", 
+    role.RoleName, role.RoleDesc, role.AccessPermission, id)
+    
+    if err != nil {
+        return 0, err
+    } 
+
+    affect, err = result.RowsAffected()
+
+
+    if affect == 0 {
+        err = fmt.Errorf("resource not found or id that input is false")
+        return 
+    } else if affect != 1 {
+        err = fmt.Errorf("error function, too many deleted resource. Affected : %d", affect)
+        return
+    }
+
+    return
+
+}
+func (repo *repoRole) Delete(id string) (affect int64, err error) {
+    result, err := repo.DB.Exec("DELETE FROM roles where id = $1", id)
+    if  err != nil {
+        return -1, err
+    }
+    affect, err = result.RowsAffected()
+
+    if  err != nil {
+        return
+    }
+
+    if affect == 0 {
+        err = fmt.Errorf("resource not found or id that input is false")
+        return 
+    } else if affect != 1 {
+        err = fmt.Errorf("error function, too many deleted resource. Affected : %d", affect)
+        return 
+
+    }
+    return
+}

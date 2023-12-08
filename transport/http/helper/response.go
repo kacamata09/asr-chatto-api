@@ -36,6 +36,16 @@ func SuccessResponse(c echo.Context, data interface{}, message string) error {
 	return c.JSON(http.StatusOK, response)
 }
 
+func NotFoundResponse(c echo.Context, message string) error {
+	
+	response := Response{
+		Status:  http.StatusNotFound,
+		Message: message,
+	}
+
+	return c.JSON(http.StatusNotFound, response)
+}
+
 func ErrorResponse(c echo.Context, err error) error {
 	statusCode := getStatusCodeError(err)
 	response := Response {
@@ -45,6 +55,7 @@ func ErrorResponse(c echo.Context, err error) error {
 
 	return c.JSON(statusCode, response)
 }
+
 
 func getStatusCodeError(err error) int {
 	if err == nil {

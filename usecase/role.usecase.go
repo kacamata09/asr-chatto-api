@@ -41,3 +41,18 @@ func (uc RoleUsecase) Create(input *domain.Role)  error {
 	return err
 }
 
+func (uc RoleUsecase) Update(id string, input *domain.Role)  (affect int64, err error) {
+	// roleExisted := uc.RoleRepo.GetByName(input.RoleName)
+	// if roleExisted {
+	// 	return "sudah ada coy"
+	// }
+	
+	affect, err = uc.RoleRepo.Update(id, input)
+	return 
+}
+
+func (uc RoleUsecase) Delete(id string)  (affect int64, err error) {
+	affect, err = uc.RoleRepo.Delete(id)
+	return 
+}
+

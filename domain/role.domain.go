@@ -22,12 +22,14 @@ type RoleRepository interface {
 	GetAll() ([]Role, error)
 	GetByID(id string) (Role, error)
 	Create(role *Role) error
-	// Update(ar *Article) error
-	// Delete(id string) error
+	Update(id string, role *Role) (affect int64, err error)
+	Delete(id string) (affect int64, err error)
 }
 
 type RoleUsecase interface {
 	GetAllData() ([]Role, error)
 	GetByID(id string) (Role, error)
 	Create(role *Role) error
+	Update(id string, role *Role) (affect int64, err error)
+	Delete(id string) (affect int64, err error)
 }

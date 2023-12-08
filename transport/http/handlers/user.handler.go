@@ -20,9 +20,13 @@ func UserRoute(e *echo.Echo, uc domain.UserUsecase) {
 	handler := UserHandler {
 		usecase: uc,
 	}
-	e.GET("/user/", handler.GetAllHandler)
+	e.GET("/user/", func(c echo.Context) error {
+		return c.Redirect(http.StatusMovedPermanently, "/user")
+	})
+	
+	e.GET("/user", handler.GetAllHandler)
+	e.POST("/user", handler.Create)
 	e.GET("/user/:id", handler.GetByIDHandler)
-	e.POST("/user/", handler.Create)
 }     
 
 func (h *UserHandler) GetAllHandler(c echo.Context) error {

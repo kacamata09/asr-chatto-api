@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	repositoryPgSQL "go-clean-architecture-by-ahr/repository/pgsql"
 	handler "go-clean-architecture-by-ahr/transport/http/handlers"
+	"go-clean-architecture-by-ahr/transport/http/middleware"
 	"go-clean-architecture-by-ahr/usecase"
 	"net/http"
 
@@ -16,12 +17,15 @@ type Home struct {
 
 func homeHandler(c echo.Context) error {
 	data := Home {
-		Message : "welcome my chat project, for documentation check route /api-documentation",
+		Message : "welcome my chat project",
 	}
 	return c.JSON(http.StatusOK, data)
 }
 
 func StartHttp(e *echo.Echo, db *sql.DB) {
+	// init middleware
+	middleware := middleware.InitMiddleware()
+	e.Use(middleware.CORS)
 
 	// assign home
 	e.GET("/", homeHandler)
@@ -35,8 +39,6 @@ func StartHttp(e *echo.Echo, db *sql.DB) {
 	userRepo := repositoryPgSQL.CreateRepoUser(db)
 	userUseCase := usecase.CreateUserUseCase(userRepo)
 	handler.UserRoute(e, userUseCase)
-	
-
 
 
 }

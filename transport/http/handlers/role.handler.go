@@ -20,9 +20,11 @@ func RoleRoute(e *echo.Echo, uc domain.RoleUsecase) {
 	handler := RoleHandler {
 		usecase: uc,
 	}
-	e.GET("/role/", handler.GetAllHandler)
+	e.POST("/role", handler.Create)
+	e.GET("/role", handler.GetAllHandler)
 	e.GET("/role/:id", handler.GetByIDHandler)
-	e.POST("/role/", handler.Create)
+	e.PUT("/role/:id", handler.Update)
+	e.DELETE("/role/:id", handler.Delete)
 }     
 
 func (h *RoleHandler) GetAllHandler(c echo.Context) error {
@@ -65,9 +67,48 @@ func (h *RoleHandler) Create(c echo.Context) error {
 	}
 
 	err = h.usecase.Create(&data) 
-	resp := helper_http.SuccessResponse(c, data, "success create role")
 	if err != nil {
-		resp = helper_http.ErrorResponse(c, err)
+		return helper_http.ErrorResponse(c, err)
 	}
-	return resp
+	return helper_http.SuccessResponse(c, data, "success create role")
 }
+
+func (h *RoleHandler) Update(c echo.Context) error {
+	var data domain.Role
+	
+	err := c.Bind(&data)
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, err.Error())
+	}
+
+	id := c.Param("id")
+	
+	affect, err := h.usecase.Update(id, &data) 
+	
+	if affect == 0 {
+		return helper_http.NotFoundResponse(c, err.Error())
+	}
+
+
+	if err != nil {
+		return helper_http.ErrorResponse(c, err)
+	}
+	return helper_http.SuccessResponse(c, data, "success update role")
+
+}
+
+func (h *RoleHandler) Delete(c echo.Context) error {
+	id := c.Param("id")
+	affect, err := h.usecase.Delete(id) 
+
+	if affect == 0 {
+		return helper_http.NotFoundResponse(c, err.Error())
+	}
+
+	if err != nil {
+		return helper_http.ErrorResponse(c, err)
+	}
+	return c.NoContent(http.StatusNoContent)
+
+}
+
